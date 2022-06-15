@@ -1,17 +1,24 @@
 # !/usr/bin/env python
 # encoding: utf-8
 
+from functools import wraps
+
 from ckan.plugins import toolkit
 
 
-def auth(proxy=None, keymapping=None, *decorators):
-
+def auth(proxy=None, keymapping=None, anon=False):
     def wrapper(function):
         function.is_auth = True
-        function.proxy = proxy
-        function.keymapping = keymapping
-        function.auth_decorators = decorators
-        return function
+        if anon:
+            function = toolkit.auth_allow_anonymous_access(function)
+
+        @wraps(function)
+        def wrapped(context, data_dict):
+            if proxy:
+                check(proxy, context, data_dict, keymapping)
+            return function(context, data_dict)
+
+        return wrapped
 
     return wrapper
 
@@ -59,15 +66,3 @@ def is_auth(function):
     :return: True if the function is an auth function, False if not
     '''
     return getattr(function, 'is_auth', False)
-
-
-def wrap_auth_function(function):
-    def auth_function(context, data_dict):
-        check(function.proxy, context, data_dict, function.keymapping)
-        return function(context, data_dict)
-
-    # apply the decorators to the action function we've created
-    for decorator in function.auth_decorators:
-        auth_function = decorator(auth_function)
-
-    return auth_function

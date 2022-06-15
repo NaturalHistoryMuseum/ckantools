@@ -4,7 +4,7 @@
 import inspect
 
 from ckantools.decorators.actions import is_action, wrap_action_function
-from ckantools.decorators.auth import is_auth, wrap_auth_function
+from ckantools.decorators.auth import is_auth
 from ckantools.decorators.validators import is_validator
 
 
@@ -43,7 +43,7 @@ def create_auth(*modules):
         # auths must be functions and pass the is_auth function's tests
         functions = inspect.getmembers(module, lambda f: inspect.isfunction(f) and is_auth(f))
         for function_name, function in functions:
-            auth[function_name] = wrap_auth_function(function)
+            auth[function_name] = function
 
     return auth
 
