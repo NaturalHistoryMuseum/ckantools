@@ -2,7 +2,7 @@
 # encoding: utf-8
 
 import json
-
+from abc import ABC
 from ckan.plugins import toolkit
 
 
@@ -68,3 +68,43 @@ def list_validator(value, context):
         return value
     else:
         raise toolkit.Invalid('Value must be a list')
+
+
+class BaseArgs:
+    fields = {}
+    defaults = {}
+
+    def __init__(self, **kwargs):
+        data, errors = toolkit.navl_validate(kwargs, self.fields)
+        if len(errors) == 1:
+            raise errors[0]
+        elif len(errors) > 0:
+            raise toolkit.Invalid(f'{len(errors)} errors when creating {self.__name__}.')
+        for field, validators in self.fields.items():
+            v = data.get(field, self.defaults.get(field))
+            setattr(self, field, v)
+        self.validate()
+
+    def validate(self):
+        '''
+        Additional validation.
+        '''
+        pass
+
+
+def object_validator(object_class: type):
+    def _object_validator(value, context):
+        if isinstance(value, str):
+            try:
+                value = json.loads(value)
+            except ValueError:
+                raise toolkit.Invalid('Cannot parse JSON')
+        if isinstance(value, dict):
+            try:
+                return object_class(**value)
+            except Exception as e:
+                raise toolkit.Invalid(f'{object_class.__name__} could not be created ({e})')
+        else:
+            raise toolkit.Invalid('Value must be a dict')
+
+    return _object_validator
