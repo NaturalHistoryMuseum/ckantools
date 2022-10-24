@@ -3,13 +3,14 @@
 
 import copy
 import inspect
+from functools import wraps
 
 from ckan.plugins import toolkit
 
 from ckantools.validators import validate_by_schema
 
 
-def action(schema, help, *decorators):
+def action(schema, helptext):
     '''
     Decorator that indicates that the function being decorated is an action function. By wrapping
     a function with this decorator and then passing the module to the create_actions function in
@@ -21,17 +22,20 @@ def action(schema, help, *decorators):
         - decoration of the action with the given decorators
 
     :param schema: the schema dict to validate the data_dict's passed to this action against
-    :param help: the help text to associate with the action when it is presented to action API users
-    :param decorators: a list of decorators to apply to the resulting action function passed to CKAN
+    :param helptext: the help text to associate with the action when it is presented to action API users
     :return: a wrapper function
     '''
 
     def wrapper(function):
         function.is_action = True
         function.action_schema = schema
-        function.action_help = help
-        function.action_decorators = decorators
-        return function
+        function.action_help = helptext
+
+        @wraps(function)
+        def wrapped(*args, **kwargs):
+            return function(*args, **kwargs)
+
+        return wrapped
 
     return wrapper
 
@@ -118,8 +122,5 @@ def wrap_action_function(action_name, function):
 
     # add the help as the doc so that CKAN finds it and uses it as the help text
     action_function.__doc__ = function.action_help.strip()
-    # apply the decorators to the action function we've created
-    for action_decorator in function.action_decorators:
-        action_function = action_decorator(action_function)
 
     return action_function
