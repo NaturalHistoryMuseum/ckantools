@@ -57,6 +57,7 @@ class ExamplePlugin(SingletonPlugin):
 ```
 
 Main benefits to using the decorator:
+- automatically calls relevant auth function
 - injects items defined in schema as function args
 - allows you to define long or complex schemas and helptexts without cluttering up code and/or affecting readability
 - neater and easier to maintain than having to list out all of the actions you want to load, e.g.
