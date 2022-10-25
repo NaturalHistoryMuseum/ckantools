@@ -123,4 +123,9 @@ def wrap_action_function(action_name, function):
     # add the help as the doc so that CKAN finds it and uses it as the help text
     action_function.__doc__ = function.action_help.strip()
 
+    # add back any attributes added by other decorators
+    other_attrs = {k: v for k, v in function.__dict__.items() if k not in ['is_action', 'action_schema', 'action_help', '__wrapped__']}
+    for k, v in other_attrs.items():
+        setattr(action_function, k, v)
+
     return action_function
