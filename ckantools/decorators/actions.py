@@ -10,7 +10,7 @@ from ckan.plugins import toolkit
 from ckantools.validators import validate_by_schema
 
 
-def action(schema, helptext):
+def action(schema, helptext, get=False, *decorators):
     '''
     Decorator that indicates that the function being decorated is an action function. By wrapping
     a function with this decorator and then passing the module to the create_actions function in
@@ -23,6 +23,9 @@ def action(schema, helptext):
 
     :param schema: the schema dict to validate the data_dict's passed to this action against
     :param helptext: the help text to associate with the action when it is presented to action API users
+    :param get: convenience arg for applying toolkit.side_effect_free (i.e. make action GET-able)
+    :param decorators: a list of decorators to apply to the resulting action function passed to CKAN
+
     :return: a wrapper function
     '''
 
@@ -30,12 +33,10 @@ def action(schema, helptext):
         function.is_action = True
         function.action_schema = schema
         function.action_help = helptext
-
-        @wraps(function)
-        def wrapped(*args, **kwargs):
-            return function(*args, **kwargs)
-
-        return wrapped
+        function.action_decorators = decorators
+        if get:
+            function.action_decorators.append(toolkit.side_effect_free)
+        return function
 
     return wrapper
 
@@ -123,9 +124,8 @@ def wrap_action_function(action_name, function):
     # add the help as the doc so that CKAN finds it and uses it as the help text
     action_function.__doc__ = function.action_help.strip()
 
-    # add back any attributes added by other decorators
-    other_attrs = {k: v for k, v in function.__dict__.items() if k not in ['is_action', 'action_schema', 'action_help', '__wrapped__']}
-    for k, v in other_attrs.items():
-        setattr(action_function, k, v)
+    # apply the decorators to the action function we've created
+    for action_decorator in function.action_decorators:
+        action_function = action_decorator(action_function)
 
     return action_function
