@@ -5,5 +5,5 @@ build-backend = "setuptools.build_meta"
 [tool]
 [tool.commitizen]
 name = "cz_conventional_commits"
-version = "0.0.5"
+version = "0.0.6"
 tag_format = "v$version"
