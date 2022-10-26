@@ -33,7 +33,7 @@ def action(schema, helptext, get=False, *decorators):
         function.is_action = True
         function.action_schema = schema
         function.action_help = helptext
-        function.action_decorators = decorators
+        function.action_decorators = list(decorators)
         if get:
             function.action_decorators.append(toolkit.side_effect_free)
         return function
