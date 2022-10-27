@@ -23,7 +23,10 @@ def create_actions(*modules):
         # actions must be functions and pass the is_action function's tests
         functions = inspect.getmembers(module, lambda f: inspect.isfunction(f) and is_action(f))
         for function_name, function in functions:
-            actions[function_name] = wrap_action_function(function_name, function)
+            if getattr(function, 'load_action_schema', False):
+                actions[function_name] = wrap_action_function(function_name, function)
+            else:
+                actions[function_name] = function
 
     return actions
 

@@ -31,6 +31,7 @@ def action(schema, helptext, get=False, *decorators):
 
     def wrapper(function):
         function.is_action = True
+        function.load_action_schema = True
         function.action_schema = schema
         function.action_help = helptext
         function.action_decorators = list(decorators)
@@ -39,6 +40,16 @@ def action(schema, helptext, get=False, *decorators):
         return function
 
     return wrapper
+
+
+def basic_action(function):
+    '''
+    Load an action without loading the schema, helptext, etc. Useful for chained actions.
+    '''
+    function.is_action = True
+    function.load_action_schema = False
+
+    return function
 
 
 def is_action(function):
