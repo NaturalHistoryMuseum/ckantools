@@ -31,6 +31,7 @@ def action(schema, helptext, get=False, *decorators):
 
     def wrapper(function):
         function.is_action = True
+        function.load_action_schema = True
         function.action_schema = schema
         function.action_help = helptext
         function.action_decorators = list(decorators)
@@ -39,6 +40,16 @@ def action(schema, helptext, get=False, *decorators):
         return function
 
     return wrapper
+
+
+def basic_action(function):
+    '''
+    Load an action without loading the schema, helptext, etc. Useful for chained actions.
+    '''
+    function.is_action = True
+    function.load_action_schema = False
+
+    return function
 
 
 def is_action(function):
@@ -78,7 +89,7 @@ def wrap_action_function(action_name, function):
           you must include them as args, not kwargs.
         - automatic validation using the schema provided with the action function
         - automatic access check
-        - attachment of doc which lives separately to the action funciton, this keeps the doc for
+        - attachment of doc which lives separately to the action function, this keeps the doc for
           end users and the doc for other developers separate (as the doc exists in the code for the
           actual action function but is then replaced with the provided help text when passed to
           CKAN).

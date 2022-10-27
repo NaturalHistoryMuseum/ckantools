@@ -1,3 +1,10 @@
+## v0.1.0 (2022-10-27)
+
+### Feat
+
+- **actions**: add basic_action to load action via decorator without schema etc
+- **vars**: add vars file for common constants, variables, etc
+
 ## v0.0.7 (2022-10-26)
 
 ### Fix
