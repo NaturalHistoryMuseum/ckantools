@@ -13,13 +13,10 @@ jobs:
     steps:
       - name: Check out
         uses: actions/checkout@v2
-        with:
-          token: "${{ secrets.PERSONAL_ACCESS_TOKEN }}"
-          fetch-depth: 0
       - name: Create bump and changelog
         uses: commitizen-tools/commitizen-action@master
         with:
-          github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           changelog_increment_filename: CURRENT.md
       - name: Release
         uses: softprops/action-gh-release@v1
