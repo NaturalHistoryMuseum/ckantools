@@ -15,7 +15,12 @@ def auth(proxy=None, keymapping=None, anon=False):
         @wraps(function)
         def wrapped(context, data_dict):
             if proxy:
-                check(proxy, context, data_dict, keymapping)
+                if isinstance(proxy, str):
+                    proxy_list = [proxy]
+                else:
+                    proxy_list = proxy
+                for p in proxy_list:
+                    check(p, context, data_dict, keymapping)
             return function(context, data_dict)
 
         return wrapped
