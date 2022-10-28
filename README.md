@@ -12,6 +12,8 @@ _Utilities and common methods for CKAN extensions._
 
 A collection of methods, decorators, and anything else that might be useful.
 
+_ckantools is still very much in development, and is prone to frequent changes that may or may not work._
+
 # Installation
 
 ```shell
@@ -35,8 +37,18 @@ schema = {
 
 helptext = 'This action only exists as an example, so does not actually anything.'
 
-@action(schema, helptext)
+@action(schema, helptext, get=False, other_decorator_1, other_decorator_2)
 def example_action(parameter_1, parameter_2):
+    # ...
+```
+
+Or the `@basic_action` decorator if you want to load the action but don't want any of the other features (schema loading, auto auth, etc):
+```python
+from ckantools.decorators import basic_action
+
+@basic_action
+@toolkit.chained_action
+def example_action(next_func, context, data_dict):
     # ...
 ```
 

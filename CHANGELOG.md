@@ -1,3 +1,9 @@
+## v0.2.0 (2022-10-28)
+
+### Feat
+
+- **decorators**: allow multiple proxies
+
 ## v0.1.0 (2022-10-27)
 
 ### Feat
