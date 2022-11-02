@@ -9,7 +9,7 @@ jobs:
   bump-version:
     if: "!startsWith(github.event.head_commit.message, 'bump:')"
     runs-on: ubuntu-latest
-    name: "Bump version, create changelog, and publish to pypi"
+    name: "Bump version and create changelog"
     steps:
       - name: Check out
         uses: actions/checkout@v2
@@ -25,6 +25,10 @@ jobs:
           tag_name: v${{ env.REVISION }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  deploy-package:
+    runs-on: ubuntu-latest
+    name: "Deploy to PyPI"
+    steps:
       - name: Set up Python
         uses: actions/setup-python@v3
         with:
