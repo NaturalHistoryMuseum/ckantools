@@ -62,7 +62,7 @@ from ckan.plugins import implements, interfaces, SingletonPlugin
 
 class ExamplePlugin(SingletonPlugin):
     implements(interfaces.IActions)
-    
+
     # IActions
     def get_actions(self):
         return create_actions(module_name)
@@ -126,7 +126,7 @@ from ckan.plugins import implements, interfaces, SingletonPlugin
 
 class ExamplePlugin(SingletonPlugin):
     implements(interfaces.IActions)
-    
+
     # IAuthFunctions
     def get_auth_functions(self):
         return create_auth(module_name)
