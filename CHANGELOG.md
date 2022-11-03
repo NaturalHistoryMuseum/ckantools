@@ -1,3 +1,9 @@
+## v0.3.1 (2022-11-03)
+
+### Fix
+
+- update version in pyproject.toml and add version_files
+
 ## v0.3.0 (2022-11-02)
 
 ### Feat
