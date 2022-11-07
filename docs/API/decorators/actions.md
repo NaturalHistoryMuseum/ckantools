@@ -1,2 +1,0 @@
-# Actions
-::: ckantools.decorators.actions

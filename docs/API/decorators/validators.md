@@ -1,2 +1,0 @@
-# Validators
-::: ckantools.decorators.validators

@@ -1,2 +1,0 @@
-# IValidators
-::: ckantools.validators.ivalidators
