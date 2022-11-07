@@ -20,16 +20,16 @@ def action(schema, helptext, *decorators, get=False):
         - attachment of the given help text to the action function
         - decoration of the action with the given decorators
 
-    :param schema: the schema dict to validate the data_dict's passed to this action
-                   against
-    :param helptext: the help text to associate with the action when it is presented to
-                     action API users
-    :param get: convenience arg for applying toolkit.side_effect_free (i.e. make action
-                GET-able)
-    :param decorators: a list of decorators to apply to the resulting action function
-                       passed to CKAN
-
+    :param schema: the schema dict to validate the data_dict's passed to this action against
+    :type schema: dict
+    :param helptext: the help text to associate with the action when it is presented to action API users
+    :type helptext: str
+    :param get: convenience arg for applying toolkit.side_effect_free (i.e. make action GET-able)
+    :type get: bool
+    :param *decorators: a list of decorators to apply to the resulting action function passed to CKAN
+    :type *decorators: func
     :return: a wrapper function
+    :rtype: func
     """
 
     def wrapper(function):
@@ -50,6 +50,11 @@ def basic_action(function):
     Load an action without loading the schema, helptext, etc.
 
     Useful for chained actions.
+
+    :param function: the function being decorated
+    :type function: func
+    :return: the same function (not wrapped), with attributes added
+    :rtype: func
     """
     function.is_action = True
     function.load_action_schema = False
@@ -63,7 +68,9 @@ def is_action(function):
     the existance of the is_action attribute which is set in the action decorator above.
 
     :param function: the function to check
+    :type function: func
     :return: True if the function is an action function, False if not
+    :rtype: bool
     """
     return getattr(function, 'is_action', False)
 
@@ -101,8 +108,11 @@ def wrap_action_function(action_name, function):
           the provided help text when passed to CKAN).
 
     :param action_name: the name of the action
+    :type action_name: str
     :param function: the action function itself that we will be wrapping
+    :type function: func
     :return: the wrapped action function
+    :rtype: func
     """
     arg_spec = inspect.getfullargspec(function)
     if arg_spec.defaults is not None:
