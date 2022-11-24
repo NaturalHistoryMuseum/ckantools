@@ -1,6 +1,6 @@
 [project]
 name = "ckantools"
-version = "0.3.1"
+version = "0.3.2"
 description = "Utilities for ckan extensions."
 readme = "README.md"
 requires-python = ">=3.6"
@@ -55,7 +55,7 @@ exclude = ["tests"]
 
 [tool.commitizen]
 name = "cz_nhm"
-version = "0.3.1"
+version = "0.3.2"
 tag_format = "v$version"
 update_changelog_on_bump = true
 changelog_incremental = false

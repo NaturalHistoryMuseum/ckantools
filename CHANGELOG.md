@@ -1,3 +1,29 @@
+## v0.3.2 (2022-11-24)
+
+### Fix
+
+- add cz-nhm extra requirement to bump flow
+
+### Docs
+
+- add logo
+- improve docs styling and content
+- add docs with mkdocs
+
+### Build System(s)
+
+- use cz_nhm commitizen config
+- add mkdocs config to rtd config
+
+### CI System(s)
+
+- add patch bump
+
+### Chores/Misc
+
+- **commits**: move cz config into separate file
+- add to gitignore
+
 ## v0.3.1 (2022-11-03)
 
 ### Fix
