@@ -134,7 +134,7 @@ def wrap_action_function(action_name, function):
             required_args.remove(param)
             to_inject.append(param)
 
-    def action_function(context, data_dict):
+    def action_function(context, data_dict, **kw):
         original_data_dict = copy.deepcopy(data_dict)
         data_dict = validate_by_schema(context, data_dict, function.action_schema)
         toolkit.check_access(action_name, context, data_dict)
