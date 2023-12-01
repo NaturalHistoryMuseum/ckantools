@@ -1,3 +1,14 @@
+## v0.3.3 (2023-12-01)
+
+### Fix
+
+- **actions**: add kw to action_function
+
+### Build System(s)
+
+- add sync workflow to keep branches updated
+- update docs, pre-commit config, and repo health files
+
 ## v0.3.2 (2022-11-24)
 
 ### Fix
