@@ -32,4 +32,4 @@ def get_debug(default=True):
     :param default: returns this if neither is set
     :return: True if debug mode is enabled
     """
-    return get_setting('debug', 'DEBUG', default=default)
+    return toolkit.asbool(get_setting('debug', 'DEBUG', default=default))
