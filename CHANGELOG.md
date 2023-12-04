@@ -1,3 +1,9 @@
+## v0.4.1 (2023-12-04)
+
+### Fix
+
+- return settings even if they're false
+
 ## v0.4.0 (2023-12-04)
 
 ### Feature
