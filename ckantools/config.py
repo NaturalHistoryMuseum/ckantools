@@ -16,12 +16,11 @@ def get_setting(*config_names, default=None):
     :param default: the value to use if none of the config values are set
     :return: the value of one of the config settings, or the default if none are set
     """
-    setting = None
     for c in config_names:
         setting = toolkit.config.get(c)
         if setting is not None:
-            break
-    return setting or default
+            return setting
+    return default
 
 
 def get_debug(default=True):
