@@ -1,3 +1,17 @@
+## v0.4.0 (2023-12-04)
+
+### Feature
+
+- add functions to get settings from ckan config
+
+### Fix
+
+- cast debug value as bool
+
+### Chores/Misc
+
+- add build info to rtd config
+
 ## v0.3.3 (2023-12-01)
 
 ### Fix
