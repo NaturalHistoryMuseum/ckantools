@@ -10,12 +10,11 @@ def auth(proxy=None, keymapping=None, anon=False):
     """
     Decorator that indicates that the function being decorated is an auth function.
 
-    :param proxy: a name or list of names of auth functions that should be called
-                  before this one (optional)
+    :param proxy: a name or list of names of auth functions that should be called before
+        this one (optional)
     :param keymapping: a dict remapping names of keys from this data_dict to the proxy
-                       function(s) data_dict; e.g. if the parameter 'id' is called
-                       'resource_id' in the proxy function, the keymapping would be
-                       {'id': 'resource_id'} (optional)
+        function(s) data_dict; e.g. if the parameter 'id' is called 'resource_id' in the
+        proxy function, the keymapping would be {'id': 'resource_id'} (optional)
     :param anon: allow anonymous access (optional)
     :return: a wrapper function
     """
@@ -26,7 +25,13 @@ def auth(proxy=None, keymapping=None, anon=False):
             function = toolkit.auth_allow_anonymous_access(function)
 
         @wraps(function)
-        def wrapped(context, data_dict):
+        def wrapped(*args):
+            if len(args) == 2:
+                context, data_dict = args
+            elif len(args) == 3:
+                next_auth, context, data_dict = args
+            else:
+                raise ValueError('Incorrect number of arguments.')
             if proxy:
                 if isinstance(proxy, str):
                     proxy_list = [proxy]
@@ -34,7 +39,7 @@ def auth(proxy=None, keymapping=None, anon=False):
                     proxy_list = proxy
                 for proxy_name in proxy_list:
                     check(proxy_name, context, data_dict, keymapping)
-            return function(context, data_dict)
+            return function(*args)
 
         return wrapped
 
@@ -50,12 +55,11 @@ def check(proxy, context, data_dict, keymapping=None):
     :param context: the context dict
     :param data_dict: the data dict
     :param keymapping: a dict of data_dict key to auth function key, e.g. if the proxied
-                       function requires 'id' but the data_dict contains that value as
-                       'resource_id'
+        function requires 'id' but the data_dict contains that value as 'resource_id'
     :return: a dict containing a "success" key with a boolean value indicating whether
-             the current user has the required access. If the user does not then an
-             additional "msg" key is returned in this dict which contains a
-             user-friendly message.
+        the current user has the required access. If the user does not then an
+        additional "msg" key is returned in this dict which contains a user-friendly
+        message.
     """
     data_dict_copy = data_dict.copy() if data_dict else {}
     keymapping = keymapping or {}

@@ -1,6 +1,5 @@
 # !/usr/bin/env python
 # encoding: utf-8
-
 """
 Useful decorators for tasks such as automated loading of actions and auth functions.
 """
