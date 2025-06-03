@@ -1,3 +1,26 @@
+## v0.4.2 (2025-06-03)
+
+### Fix
+
+- accept 3 args for auth functions
+
+### Docs
+
+- improve decorator docs
+
+### Style
+
+- run automated fixes
+
+### CI System(s)
+
+- update workflows
+- update pre-commit config and switch to ruff
+
+### Chores/Misc
+
+- remove old dist files
+
 ## v0.4.1 (2023-12-04)
 
 ### Fix
