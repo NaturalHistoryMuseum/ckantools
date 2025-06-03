@@ -12,7 +12,7 @@ def get_setting(*config_names, default=None):
     and finally use the default if neither is set.
 
     :param config_names: the names of the config settings to check, in descending order
-                         of priority
+        of priority
     :param default: the value to use if none of the config values are set
     :return: the value of one of the config settings, or the default if none are set
     """

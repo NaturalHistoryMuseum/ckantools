@@ -2,6 +2,7 @@
 # encoding: utf-8
 
 import json
+
 from ckan.plugins import toolkit
 
 
@@ -36,7 +37,7 @@ def list_of_strings(delimiter=','):
     neither a list or a string then an error is raised.
 
     :param delimiter: the string to delimit the value on, if it's a string; defaults to
-                      a comma
+        a comma
     :return: a list
     """
 
