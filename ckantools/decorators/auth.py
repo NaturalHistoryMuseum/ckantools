@@ -26,7 +26,13 @@ def auth(proxy=None, keymapping=None, anon=False):
             function = toolkit.auth_allow_anonymous_access(function)
 
         @wraps(function)
-        def wrapped(context, data_dict):
+        def wrapped(*args):
+            if len(args) == 2:
+                context, data_dict = args
+            elif len(args) == 3:
+                next_auth, context, data_dict = args
+            else:
+                raise ValueError('Incorrect number of arguments.')
             if proxy:
                 if isinstance(proxy, str):
                     proxy_list = [proxy]
@@ -34,7 +40,7 @@ def auth(proxy=None, keymapping=None, anon=False):
                     proxy_list = proxy
                 for proxy_name in proxy_list:
                     check(proxy_name, context, data_dict, keymapping)
-            return function(context, data_dict)
+            return function(*args)
 
         return wrapped
 

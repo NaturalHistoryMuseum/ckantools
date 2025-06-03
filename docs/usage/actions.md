@@ -44,19 +44,18 @@ class ExamplePlugin(SingletonPlugin):
         return create_actions(module_name)
 ```
 
+Multiple action modules can also be passed:
+```python
+...
+    # IActions
+    def get_actions(self):
+        from .logic.actions import create, update, delete
+        return create_actions(create, update, delete)
+```
+
 Main benefits to using the decorator:
 
 - automatically calls relevant auth function
 - injects items defined in schema as function args
 - allows you to define long or complex schemas and helptexts without cluttering up code and/or affecting readability
-- neater and easier to maintain than having to list out all of the actions you want to load, e.g.
-  ```python
-        ## IActions
-  def get_actions(self):
-    return {
-        'example_action': module_name.example_action,
-        'other_action': module_name.other_action,
-        'other_other_action': module_name.other_other_action,
-        # etc
-    }
-  ```
+- neater and easier to maintain than having to list out all of the actions you want to load

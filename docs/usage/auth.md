@@ -31,6 +31,20 @@ def other_action(context, data_dict):
     return {'success': True}
 ```
 
+This decorator can also be used for chained auth functions:
+
+```python
+# logic/auth/module_name.py
+
+from ckan.plugins import toolkit
+from ckantools.decorators import auth
+
+@auth()
+@toolkit.chained_auth_function
+def core_ckan_action(next_auth, context, data_dict):
+    return next_auth
+```
+
 The auth functions can then be loaded in `plugin.py`:
 ```python
 # plugin.py
@@ -45,6 +59,15 @@ class ExamplePlugin(SingletonPlugin):
     # IAuthFunctions
     def get_auth_functions(self):
         return create_auth(module_name)
+```
+
+Multiple auth modules can also be passed:
+```python
+...
+    # IAuthFunctions
+    def get_auth_functions(self):
+        from .logic.auth import create, update, delete
+        return create_auth(create, update, delete)
 ```
 
 Main benefits to using the decorator:
