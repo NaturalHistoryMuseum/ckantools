@@ -1,3 +1,14 @@
+## v0.5.0 (2026-03-13)
+
+### Feature
+
+- add cache config and clearing
+
+### Docs
+
+- fix readme logo
+- add brief docs on cache functions
+
 ## v0.4.2 (2025-06-03)
 
 ### Fix
