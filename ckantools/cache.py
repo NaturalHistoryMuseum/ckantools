@@ -79,17 +79,31 @@ def clear_cache_region(ext_name, *modules, cache_name=None):
 
     cached_functions = []
 
+    def _is_cached_func(f):
+        is_func = inspect.isfunction(f)
+        has_ns = hasattr(f, '_arg_namespace')
+        in_rg = getattr(f, '_arg_region', None) == cache_name
+        return is_func and has_ns and in_rg
+
+    def _get_funcs(obj, parent_module=None):
+        parent_module = parent_module or obj
+        funcs = []
+        sub_objects = inspect.getmembers(
+            obj, lambda x: inspect.getmodule(x) == parent_module
+        )
+        for _, so in sub_objects:
+            if so == obj:
+                continue  # to avoid infinite recursion
+            if _is_cached_func(so):
+                funcs.append(so)
+            elif inspect.isclass(so):
+                funcs += _get_funcs(so, parent_module)
+        return funcs
+
     for module in modules:
+        cached_functions += _get_funcs(module)
 
-        def _is_cached_func(f):
-            is_func = inspect.isfunction(f)
-            has_ns = hasattr(f, '_arg_namespace')
-            in_rg = getattr(f, '_arg_region', None) == cache_name
-            return is_func and has_ns and in_rg
-
-        cached_functions += inspect.getmembers(module, _is_cached_func)
-
-    for _, func in cached_functions:
+    for func in cached_functions:
         # each function has its own namespace that needs to be cleared
         try:
             cache = cache_manager.get_cache(func._arg_namespace)
