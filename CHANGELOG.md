@@ -1,3 +1,17 @@
+## v0.6.0 (2026-06-12)
+
+### Feature
+
+- allow loading multiple regions with overrides
+
+### Fix
+
+- also get cached functions in classes
+
+### Docs
+
+- update cache docs
+
 ## v0.5.0 (2026-03-13)
 
 ### Feature
