@@ -17,7 +17,43 @@ class ExamplePlugin(SingletonPlugin):
 
     # IConfigurable
     def configure(self, ckan_config):
+        # this will create one cache region called 'example'
         configure_cache(ckan_config, 'example')
+```
+
+It loads `.cache` settings from the CKAN config, e.g.:
+
+```ini
+# config.ini
+
+ckanext.example.cache.type = ext:redis
+ckanext.example.cache.url = redis://your-redis-ip:1234/0
+ckanext.example.cache.expire = 60
+```
+
+### Multiple regions
+
+You can also define multiple regions and override the default settings in the config:
+
+```ini
+# config.ini
+
+ckanext.example.cache.type = ext:redis
+ckanext.example.cache.url = redis://your-redis-ip:1234/0
+ckanext.example.cache._region.example_short.expire = 60
+ckanext.example.cache._region.example_long.expire = 604800
+```
+
+Then load with:
+
+```python
+# plugin.py
+
+def configure(self, ckan_config):
+    # creates two regions called 'example_short' (expire time 60s) and 'example_long' (expire time 604800s)
+    # these regions use the default .cache settings that aren't overridden (i.e. type and url in this example)
+    # the default 'example' region is not created
+    configure_cache(ckan_config, 'example', ['example_short', 'example_long'])
 ```
 
 
